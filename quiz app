@@ -1,0 +1,79 @@
+class Question:
+    def _init_(self, text, choices, answer):
+        self.text = text
+        self.choices = choices
+        self.answer = answer
+
+    def checkAnswer(self, answer):
+        return self.answer == answer
+
+
+# Quiz
+class Quiz:
+    def _init_(self, questions):
+        self.questions = questions
+        self.score = 0
+        self.questionIndex = 0
+
+    def getQuestion(self):
+        return self.questions[self.questionIndex]
+
+    def displayQuestion(self):
+        question = self.getQuestion()
+        print(f'Soru {self.questionIndex + 1}: {question.text}')
+
+        for q in question.choices:
+            print('-' + q)
+
+        answer = input('ans: ')
+        self.guess(answer)
+        self.loadQuestion()
+
+    def guess(self, answer):
+        question = self.getQuestion()
+
+        if question.checkAnswer(answer):
+            self.score += 1
+
+        self.questionIndex += 1
+    def showScore(self):
+        print('score: ', self.score)
+
+    def displayProgress(self):
+        totalQuestion = len(self.questions)
+        questionNumber = self.questionIndex + 1
+
+        if questionNumber > totalQuestion:
+            print('Quiz bitti.')
+        else:
+            print(f'Question {questionNumber} of {totalQuestion}'.center(
+                100, '*'))
+
+
+    def loadQuestion(self):
+        if len(self.questions) == self.questionIndex:
+            self.showScore()
+            self.displayProgress()
+        else:
+            self.displayProgress()
+            self.displayQuestion()
+
+
+
+
+q1 = Question('Who is known as the father of computer?',
+              ['Dennis Ritchie', 'Bill Gates', 'Charles Babbage', 'James Gosling'], 'Charles Babbage')
+q2 = Question('What is the brain of the computer system called?',
+              ['RAM', 'CPU', 'GPU', 'None of the above'], 'CPU')
+q3 = Question('What is known as temporary memory or volatile memory?',
+              ['SSD', 'HDD', 'RAM', 'ROM'], 'RAM')
+q4 = Question('Which of the following is the smallest unit of memory?',
+              ['byte', 'bit', 'nibble', 'kb'], 'bit')
+q5 = Question('What is Half Byte called ?',
+              ['kilo byte', 'bit', 'nibble', 'word size'], 'nibble')
+
+questions = [q1, q2, q3, q4, q5]
+
+quiz = Quiz(questions)
+
+quiz.loadQuestion()
